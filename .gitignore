@@ -1,0 +1,26 @@
+# Node
+node_modules
+npm-debug.log
+dist
+.env
+coverage
+
+# Prisma
+prisma/dev.db
+prisma/.env
+
+/src/generated/prisma
+
+# Docker Compose
+*.env
+*docker-compose*.yml
+postgres-docker.yml
+
+# Visual Studio Code
+.vscode/mcp.json
+
+# SQL files
+*.sql
+
+# Docker
+Dockerfile

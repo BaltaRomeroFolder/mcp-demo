@@ -1,0 +1,46 @@
+// This file was generated based on the OrderEntry schema introspection.
+// Uses multiSchema preview feature and maps all models to the OrderEntry schema.
+
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["multiSchema"]
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+  schemas  = ["OrderEntry"]
+}
+
+model Customer {
+  id    Int    @id @default(autoincrement())
+  name  String @db.VarChar(100)
+  email String @unique @db.VarChar(100)
+  orders Order[]
+
+  @@schema("OrderEntry")
+  @@map("customers")
+}
+
+model Order {
+  id         Int          @id @default(autoincrement())
+  customerId Int          @map("customer_id")
+  orderDate  DateTime?    @default(now()) @map("order_date")
+  customer   Customer     @relation(fields: [customerId], references: [id])
+  orderItems OrderItem[]
+
+  @@schema("OrderEntry")
+  @@map("orders")
+}
+
+model OrderItem {
+  id         Int      @id @default(autoincrement())
+  orderId    Int      @map("order_id")
+  productName String  @map("product_name") @db.VarChar(255)
+  quantity   Int
+  price      Decimal  @db.Decimal(10, 2)
+  order      Order    @relation(fields: [orderId], references: [id])
+
+  @@schema("OrderEntry")
+  @@map("order_items")
+}
